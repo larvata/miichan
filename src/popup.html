@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="pure-min.css">
 
 	<style>
-.layout-item-module a:link, .layout-item-module a:visited {
+.layout-item-module a, .layout-item-module a:visited {
 text-transform: capitalize;
 color: rgb(75, 75, 75);
 padding: 0 0.5714em;
@@ -15,9 +15,15 @@ display: block;
 
 }
 
+.layout-item-module div{
+    padding: 0 0.5714em;
+}
+
 
 .layout-item-modules{
 list-style-type: none;
+padding: 0 ;
+margin: 0;
 }
 /*.pure-u{
 	list-style-type: none;
@@ -25,51 +31,152 @@ list-style-type: none;
 }
 */
 
-.layout-item-module-base a {
+.layout-item-module-base>a {
     border-left: 3px solid rgb(14, 144, 210);
 }
-.layout-item-module-grids a {
+.layout-item-module-grids>a {
     border-left: 3px solid rgb(128, 88, 165);
 }
-.layout-item-module-forms a {
+.layout-item-module-forms>a {
     border-left: 3px solid rgb(94, 185, 94);
 }
-.layout-item-module-buttons a {
+.layout-item-module-buttons>a {
     border-left: 3px solid rgb(221, 81, 76);
 }
-.layout-item-module-tables a {
+.layout-item-module-tables>a {
     border-left: 3px solid rgb(243, 123, 29);
 }
-.layout-item-module-menus a {
+.layout-item-module-menus>a {
     border-left: 3px solid rgb(250, 210, 50);
 }
 
+body{
+    width:200px;
+}
+
+button{
+width:200px;
+}
+
+.schedule {
+    margin: 3px;
+    background-color: rgb(240,240,240);
+}
+.schedule span{
+    display:inline-block;
+}
+
+.time{
+    width:90px;
+}
+
+.channel{
+    width: 75px;
+    text-align: right;
+    color: grey;
+}
+
+.programm{
+    width:180px;
+}
+    .button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+            color: white;
+        }
+
 	</style>
 </head>
+
+
+
 <body>
-<a class="pure-button pure-button-primary" href="#">A Pure Button</a>
-<button class="pure-button">A Pure Button</button>
+
 
 <ul class="layout-item-modules">
 
                 <li class="layout-item-module layout-item-module-base">
-                    <a href="/base/">base</a>
+                    <a>schedule</a>
+
+
+                    <ul class="layout-item-modules">
+                    <li class="layout-item-module layout-item-module-base">
+                    <div class="schedule">
+                        <div>
+                            <span class="time">22：59～23：54</span><span class="channel">akb48房间</span>
+                        </div>
+                        <div>
+                            <span class="programm"> 今夜くらべてみました 前田敦子</span>
+                        </div>
+
+                    </div>
+                    <div class="schedule">
+                        <div>
+                            <span class="time">23：59～0：29</span><span class="channel">akb48房间</span>
+                        </div>
+                        <div>
+                            <span class="programm"> AKBINGO!</span>
+                        </div>
+
+                    </div>
+
+                    </li>
+                    <li class="layout-item-module layout-item-module-base">
+
+                    </li>
+                    <li class="layout-item-module layout-item-module-base">
+
+                    </li>
+                    <li class="layout-item-module layout-item-module-base">
+
+                    </li>
+
+</ul>
+
                 </li>
 
                 <li class="layout-item-module layout-item-module-grids">
-                    <a href="/grids/">grids</a>
-                </li>
+                    <a>channel</a>
 
-                <li class="layout-item-module layout-item-module-buttons">
-                    <a href="/buttons/">buttons</a>
-                </li>
+                    <ul class="layout-item-modules">
 
-                <li class="layout-item-module layout-item-module-menus">
-                    <a href="/menus/">menus</a>
-                </li>
+
+
+                    <ul class="layout-item-modules">
+
+                                        <li class="layout-item-module layout-item-module-base">
+                        <button class="pure-button pure-button-disabled">HKT48公演直播</button>
+                    </li>
+                    <li class="layout-item-module layout-item-module-base">
+
+                       <button class="pure-button button-success">从来不突突突的48系番组直播间</button>
+
+
+                    </li>
+                    <li class="layout-item-module layout-item-module-base">
+                        <button class="pure-button pure-button-disabled">SKE48 公演直播</button>
+                    </li>
+
+
+
+</ul>
+
+
 
             </ul>
+
+
+
+
+
+
+
+
+</div>
+
+<script src="app.js"></script>
 </body>
+
+
 
 </html>
 
