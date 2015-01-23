@@ -15,8 +15,8 @@ display: block;
 
 }
 
-.layout-item-module div{
-    padding: 0 0.5714em;
+.layout-item-module div.schedule{
+    padding: 0 0 0 0.5714em;
 }
 
 
@@ -172,6 +172,27 @@ width:200px;
 
 
 </div>
+
+<script id="template-schedules" type="text/x-handlerbars-template">
+
+
+        <div class="schedule">
+            <div>
+                <span class="time">{{end}}</span><span class="channel">{{begin}}</span>
+            </div>
+            <div>
+                <span class="programm">{{description}}</span>
+            </div>
+
+        </div>
+
+
+</script>
+
+
+<script src="zepto.min.js"></script>
+
+<script src="handlebars.min.js"></script>
 
 <script src="app.js"></script>
 </body>
