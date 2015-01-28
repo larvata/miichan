@@ -3,6 +3,8 @@
 	"name": "naachan",
 	"version": "0.1",
 
+	// "permissions":["storage"],
+
 	"icons":{
 		"64":"images/icon64.png"
 		},
@@ -14,6 +16,7 @@
 		"default_title":"Naachan",
 		"default_popup":"popup.html"
 	},
-
-	"options_page34534":"options.html"
+	"background":{
+		"scripts":["background.js"]
+	}
 }
