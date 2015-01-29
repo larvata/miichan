@@ -4,6 +4,14 @@
 	"version": "0.1",
 
 	// "permissions":["storage"],
+	"permissions":[
+		"notifications"
+	],
+
+	// for notification
+	"web_accessible_resources":[
+		"images/icon64.png"
+	],
 
 	"icons":{
 		"64":"images/icon64.png"
