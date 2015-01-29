@@ -1,30 +1,35 @@
 {
 	"manifest_version": 2,
-	"name": "naachan",
+	"name": "miichan",
 	"version": "0.1",
 
 	// "permissions":["storage"],
 	"permissions":[
-		"notifications"
+		"notifications",
+		"http://*/*"
 	],
 
 	// for notification
-	"web_accessible_resources":[
-		"images/icon64.png"
-	],
-
+	// "web_accessible_resources":[
+	// 	"images/icon64.png"
+	// ],
 	"icons":{
-		"64":"images/icon64.png"
+		"64":"images/icon89.png"
 		},
 
 	"browser_action":{
 		"default_icon":{
-			"64":"images/icon64.png"
+			"64":"images/icon89.png"
 		},
 		"default_title":"Naachan",
 		"default_popup":"popup.html"
+
 	},
+
+	"options_page":"options.html",
 	"background":{
 		"scripts":["background.js"]
 	}
+
+
 }
