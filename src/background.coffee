@@ -9,79 +9,7 @@ roomsStatus={}
 apiScheduleList="http://douyu.sashi-con.info/api/list"
 apiScheduleRoom="http://douyu.sashi-con.info/api/room"
 apiSnap="http://douyu.sashi-con.info/snap"
-
-# This function takes an object |imageSpec| with the key |path| -
-# corresponding to the internet URL to be translated - and optionally
-# |width| and |height| which are the maximum dimensions to be used when
-# converting the image.
-loadImageData = (imageSpec, callbacks) ->
-  path = imageSpec.path
-  img = new Image()
-  img.crossOrigin = 'anonymous'
-  if typeof callbacks.onerror is "function"
-    img.onerror = ->
-      callbacks.onerror
-        problem: "could_not_load"
-        path: path
-
-      return
-  img.onload = ->
-    canvas = document.createElement("canvas")
-    if img.width <= 0 or img.height <= 0
-      callbacks.onerror
-        problem: "image_size_invalid"
-        path: path
-
-      return
-    scaleFactor = 1
-    scaleFactor = imageSpec.width / img.width  if imageSpec.width and imageSpec.width < img.width
-    if imageSpec.height and imageSpec.height < img.height
-      heightScale = imageSpec.height / img.height
-      scaleFactor = heightScale  if heightScale < scaleFactor
-    canvas.width = img.width * scaleFactor
-    canvas.height = img.height * scaleFactor
-    canvas_context = canvas.getContext("2d")
-    canvas_context.clearRect 0, 0, canvas.width, canvas.height
-    canvas_context.drawImage img, 0, 0, canvas.width, canvas.height
-    try
-      imageData = canvas_context.getImageData(0, 0, canvas.width, canvas.height)
-      callbacks.oncomplete imageData.width, imageData.height, imageData.data.buffer  if typeof callbacks.oncomplete is "function"
-    catch e
-      if typeof callbacks.onerror is "function"
-        callbacks.onerror
-          problem: "data_url_unavailable"
-          path: path
-
-    return
-
-  img.src = path
-  return
-
-base64ToBlob = (base64Data, type) ->
-  sliceSize = 1024
-  byteCharacters = atob(base64Data)
-  bytesLength = byteCharacters.length
-  slicesCount = Math.ceil(bytesLength / sliceSize)
-  byteArrays = new Array(slicesCount)
-  sliceIndex = 0
-
-  while sliceIndex < slicesCount
-    begin = sliceIndex * sliceSize
-    end = Math.min(begin + sliceSize, bytesLength)
-    bytes = new Array(end - begin)
-    offset = begin
-    i = 0
-
-    while offset < end
-      bytes[i] = byteCharacters[offset].charCodeAt(0)
-      ++i
-      ++offset
-    byteArrays[sliceIndex] = new Uint8Array(bytes)
-    ++sliceIndex
-  new Blob(byteArrays,
-    type: type
-  )
-
+apiAvatar="http://douyu.sashi-con.info/avatar/"
 
 getBase64Image=(img)->
 
@@ -93,18 +21,13 @@ getBase64Image=(img)->
 	ctx.clearRect 0,0,canvas.width,canvas.height
 	ctx.drawImage img,0,0,canvas.width,canvas.height
 
-	# imageData=ctx.getImageData(0,0,canvas.width,canvas.height)
-
 	return canvas.toDataURL("image/jpg")
-
-	# return dataUrl.replace(/^data:image\/(png|jpg);base64,/, "")
 
 
 setBadge=(text)->
 	chrome.browserAction.setBadgeText(text:text)
 
 showScheduleNotification=()->
-	# notification=webkitNotifications.createNotification('images/icon64.png','hello','body')
 	items=schedules.map (s)->
 		start=s.end.split('～')[0]
 		{title:"#{s.begin} #{start}",message:s.description}
@@ -126,19 +49,6 @@ showScheduleNotification=()->
 
 showRoomNotification=(room)->
 
-	# items=schedules.map (s)->
-	# 	start=s.end.split('～')[0]
-	# 	{title:"#{s.begin} #{start}",message:s.description}
-
-
-	cbk=
-		oncomplete:(width,height,data)->
-			console.log width
-
-
-	# imgUrl=room.room_src.replace("http://staticlive.douyutv.com/upload/web_pic",apiSnap)
-	# loadImageData({path:imgUrl},cbk)
-
 	img=new Image()
 	img.crossOrigin = 'anonymous'
 	img.src=room.room_src.replace("http://staticlive.douyutv.com/upload/web_pic",apiSnap)
@@ -146,19 +56,39 @@ showRoomNotification=(room)->
 
 		imgData=getBase64Image(img)
 
-		options=
-			type:"image"
-			iconUrl:'images/icon89.png'
-			title: "#{room.room_name}"
-			imageUrl:imgData
-			message: 'happy happy harurupi~'
 
-		chrome.notifications.create(
-			""
-			options
-			(notificationId)->
-		)
+		imgAvatar=new Image()
+		imgAvatar.crossOrigin='anonymous'
+		imgAvatar.src=apiAvatar+room.owner_uid
 
+		imgAvatar.onload=(data)->
+
+			avatarData=getBase64Image(imgAvatar)
+
+			d=new Date(room.show_time*1000)
+
+			formattedTime ="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}:#{('0'+d.getSeconds()).substr(d.getSeconds().toString().length-1)}"
+
+			message ="于 #{formattedTime} 开播"
+
+			message += "\t#{room.show_details}"
+
+			options=
+				type:"image"
+				iconUrl: avatarData
+				title: "#{room.room_name}"
+				imageUrl:imgData
+				message: message
+
+			chrome.notifications.create(
+				room.room_id.toString()
+				options
+				(notificationId)->
+			)
+
+
+clearRoomNotification=(room)->
+	chrome.notifications.clear room.room_id.toString(),()->
 
 getSchedules=()->
 	request = new XMLHttpRequest()
@@ -180,11 +110,8 @@ getSchedules=()->
 		else
 
 		return
-
-	# We reached our target server, but it returned an error
 	request.onerror=()->
 
-	# There was a connection error of some sort
 	request.send()
 
 
@@ -200,11 +127,12 @@ getRooms=()->
 
 				else if r.show_status == 1
 					showRoomNotification(r)
+				else if r.show_status == 2
+					clearRoomNotification(r)
 
 				roomsStatus[r.room_id]=r.show_status
 
 		return
-
 	request.onerror=()->
 
 	request.send()
@@ -212,6 +140,7 @@ getRooms=()->
 
 do->
 	console.log "background loaded"
-	# getSchedules()
-	setInterval getSchedules,5000
-	setInterval getRooms,5000
+	getSchedules()
+	getRooms()
+	setInterval getSchedules,120000
+	setInterval getRooms,120000

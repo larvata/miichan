@@ -51,11 +51,11 @@ margin: 0;
 }
 
 body{
-    width:200px;
+    width:220px;
 }
 
 button{
-width:200px;
+width:220px;
 }
 
 .schedule {
@@ -67,7 +67,7 @@ width:200px;
 }
 
 .time{
-    width:90px;
+    width:100px;
 }
 
 .channel{
@@ -91,69 +91,25 @@ margin-right: 5px;
 </head>
 
 
-
 <body>
 
+    <ul class="layout-item-modules">
 
-<ul class="layout-item-modules">
+        <li class="layout-item-module layout-item-module-base">
+            <a>schedule</a>
+            <div id="scheduleList"></div>
+        </li>
 
-                <li class="layout-item-module layout-item-module-base">
-                    <a>schedule</a>
-
-
-<div id="scheduleList">
-
-</div>
-
-
-
-                </li>
-
-                <li class="layout-item-module layout-item-module-grids">
-                    <a>channel</a>
-
-                    <ul class="layout-item-modules">
-
-
-
-                    <ul id="roomList" class="layout-item-modules">
-<!--
-                                        <li class="layout-item-module layout-item-module-base">
-                        <button class="pure-button pure-button-disabled">HKT48公演直播</button>
-                    </li>
-                    <li class="layout-item-module layout-item-module-base">
-
-                       <button class="pure-button button-success">从来不突突突的48系番组直播间</button>
-
-
-                    </li>
-                    <li class="layout-item-module layout-item-module-base">
-                        <button class="pure-button pure-button-disabled">SKE48 公演直播</button>
-                    </li>
- -->
-
-
-</ul>
-
-
-
+        <li class="layout-item-module layout-item-module-grids">
+            <a>channel</a>
+            <ul class="layout-item-modules">
+                <ul id="roomList" class="layout-item-modules"></ul>
             </ul>
+        </li>
+    </ul>
 
-
-
-
-
-
-
-
-</div>
-
-
-
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
-
 
 
 </html>
