@@ -6,6 +6,8 @@ lastSchedules=[]
 rooms=[]
 roomsStatus={}
 
+scheduleNotificationId="6666"
+
 apiScheduleList="http://douyu.sashi-con.info/api/list"
 apiScheduleRoom="http://douyu.sashi-con.info/api/room"
 apiSnap="http://douyu.sashi-con.info/snap"
@@ -32,20 +34,17 @@ showScheduleNotification=()->
 		start=s.end.split('～')[0]
 		{title:"#{s.begin} #{start}",message:s.description}
 
+	chrome.notifications.clear scheduleNotificationId,()->
+		options=
+			type:"list"
+			iconUrl:'images/icon89.png'
+			title: '节目单更新'
+			message: '<null>'
+			items:items
 
-	options=
-		type:"list"
-		iconUrl:'images/icon89.png'
-		title: '节目单更新'
-		message: '<null>'
-		items:items
 
+		chrome.notifications.create scheduleNotificationId,options,(notificationId)->
 
-	chrome.notifications.create(
-		"6666"
-		options
-		(notificationId)->
-	)
 
 showRoomNotification=(room)->
 
@@ -113,7 +112,7 @@ getSchedules=()->
 	request.onerror=()->
 
 	request.send()
-
+	setTimeout getSchedules,120000
 
 getRooms=()->
 	request=new XMLHttpRequest()
@@ -137,10 +136,12 @@ getRooms=()->
 
 	request.send()
 
+	setTimeout getRooms,120000
+
 
 do->
 	console.log "background loaded"
 	getSchedules()
 	getRooms()
-	setInterval getSchedules,120000
-	setInterval getRooms,120000
+	# setInterval getSchedules,120000
+	# setInterval getRooms,120000
