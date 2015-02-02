@@ -36,8 +36,8 @@ showScheduleNotification=()->
 	options=
 		type:"list"
 		iconUrl:'images/icon89.png'
-		title: 'douyu schedule updated'
-		message: 'happy happy harurupi~'
+		title: '节目单更新'
+		message: '<null>'
 		items:items
 
 
@@ -67,11 +67,11 @@ showRoomNotification=(room)->
 
 			d=new Date(room.show_time*1000)
 
-			formattedTime ="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}:#{('0'+d.getSeconds()).substr(d.getSeconds().toString().length-1)}"
+			# formattedTime ="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}:#{('0'+d.getSeconds()).substr(d.getSeconds().toString().length-1)}"
+			formattedTime="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}"
+			message ="#{formattedTime} 开播 "
 
-			message ="于 #{formattedTime} 开播"
-
-			message += "\t#{room.show_details}"
+			message += "#{room.show_details}"
 
 			options=
 				type:"image"

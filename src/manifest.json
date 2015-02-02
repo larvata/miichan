@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "miichan",
-	"version": "0.2",
+	"version": "0.3",
 
 	// "permissions":["storage"],
 	"permissions":[
@@ -14,7 +14,7 @@
 	// 	"images/icon64.png"
 	// ],
 	"icons":{
-		"64":"images/icon89.png"
+		"128":"images/icon89.png"
 		},
 
 	"browser_action":{
