@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "miichan",
-	"version": "0.3",
+	"version": "0.4",
 
 	// "permissions":["storage"],
 	"permissions":[
@@ -21,7 +21,7 @@
 		"default_icon":{
 			"64":"images/icon89.png"
 		},
-		"default_title":"Naachan",
+		"default_title":"Miichan v0.4",
 		"default_popup":"popup.html"
 
 	},

@@ -5,6 +5,7 @@ lastSchedules=[]
 
 rooms=[]
 roomsStatus={}
+roomsShowTime={}
 
 scheduleNotificationId="6666"
 
@@ -122,14 +123,22 @@ getRooms=()->
 			rooms=JSON.parse(request.responseText)
 
 			for r in rooms
-				if roomsStatus[r.room_id] is r.show_status
 
-				else if r.show_status == 1
-					showRoomNotification(r)
-				else if r.show_status == 2
+				if r.show_status == 1
+					if roomsStatus[r.room_id] is r.show_status
+						if r.show_time != roomsShowTime[r.room_id]
+							clearRoomNotification(r)
+							showRoomNotification(r)
+					else
+						showRoomNotification(r)
+
+				else 
+					# r.show_status == 2
 					clearRoomNotification(r)
 
+
 				roomsStatus[r.room_id]=r.show_status
+				roomsShowTime[r.room_id]=r.show_time
 
 		return
 	request.onerror=()->
@@ -140,7 +149,6 @@ getRooms=()->
 
 
 do->
-	console.log "background loaded"
 	getSchedules()
 	getRooms()
 	# setInterval getSchedules,120000
