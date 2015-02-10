@@ -2,19 +2,15 @@
 	"manifest_version": 2,
 	"name": "miichan",
 	"version": "0.4",
+	"author":"Larvata",
 
-	// "permissions":["storage"],
 	"permissions":[
 		"notifications",
 		"http://*/*"
 	],
 
-	// for notification
-	// "web_accessible_resources":[
-	// 	"images/icon64.png"
-	// ],
 	"icons":{
-		"128":"images/icon89.png"
+		"128":"images/icon128.png"
 		},
 
 	"browser_action":{
