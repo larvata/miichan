@@ -1,3 +1,5 @@
-
-
+build/
+node_modules/
+gulpcoffee.js
+src/*.js
 *.crx

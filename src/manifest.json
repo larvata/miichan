@@ -1,12 +1,11 @@
 {
 	"manifest_version": 2,
 	"name": "miichan",
-	"version": "0.4",
+	"version": "{version}",
 	"author":"Larvata",
 
 	"permissions":[
-		"notifications",
-		"http://*/*"
+		"notifications"
 	],
 
 	"icons":{
@@ -15,9 +14,9 @@
 
 	"browser_action":{
 		"default_icon":{
-			"64":"images/icon89.png"
+			"128":"images/icon128.png"
 		},
-		"default_title":"Miichan v0.4",
+		"default_title":"Miichan v{version}",
 		"default_popup":"popup.html"
 
 	},

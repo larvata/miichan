@@ -2,7 +2,6 @@ schedules=[]
 scheduleChanged=false
 lastSchedules=[]
 
-
 rooms=[]
 roomsStatus={}
 roomsShowTime={}
@@ -38,12 +37,10 @@ showScheduleNotification=()->
 	chrome.notifications.clear scheduleNotificationId,()->
 		options=
 			type:"list"
-			iconUrl:'images/icon89.png'
+			iconUrl:'images/icon128.png'
 			title: '节目单更新'
 			message: '<null>'
 			items:items
-
-
 		chrome.notifications.create scheduleNotificationId,options,(notificationId)->
 
 
@@ -55,8 +52,6 @@ showRoomNotification=(room)->
 	img.onload=(data)->
 
 		imgData=getBase64Image(img)
-
-
 		imgAvatar=new Image()
 		imgAvatar.crossOrigin='anonymous'
 		imgAvatar.src=apiAvatar+room.owner_uid
@@ -64,13 +59,10 @@ showRoomNotification=(room)->
 		imgAvatar.onload=(data)->
 
 			avatarData=getBase64Image(imgAvatar)
-
 			d=new Date(room.show_time*1000)
 
-			# formattedTime ="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}:#{('0'+d.getSeconds()).substr(d.getSeconds().toString().length-1)}"
 			formattedTime="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}"
 			message ="#{formattedTime} 开播 "
-
 			message += "#{room.show_details}"
 
 			options=
@@ -95,7 +87,6 @@ getSchedules=()->
 	request.open "GET", apiScheduleList, true
 	request.onload=()->
 		if request.status >= 200 and request.status < 400
-
 			# Success!
 			schedules = JSON.parse(request.responseText)
 
@@ -104,7 +95,6 @@ getSchedules=()->
 			else
 				setBadge('!')
 				showScheduleNotification()
-
 
 			lastSchedules=schedules
 		else
@@ -131,11 +121,9 @@ getRooms=()->
 							showRoomNotification(r)
 					else
 						showRoomNotification(r)
-
-				else 
+				else
 					# r.show_status == 2
 					clearRoomNotification(r)
-
 
 				roomsStatus[r.room_id]=r.show_status
 				roomsShowTime[r.room_id]=r.show_time
@@ -151,5 +139,4 @@ getRooms=()->
 do->
 	getSchedules()
 	getRooms()
-	# setInterval getSchedules,120000
-	# setInterval getRooms,120000
+
