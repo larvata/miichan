@@ -46,7 +46,7 @@ renderRoom=()->
 
 
 		roomHtml+="<li class='layout-item-module layout-item-module-base'>"
-		roomHtml+="<button title='关注人数:#{r.fans}' class='open-tab-button pure-button #{roomClass}' data-room-url='#{r.room_url}' data-live-provider='#{r.live_provider}'>#{r.room_name}</button>"
+		roomHtml+="<button title='关注人数:#{r.fans}' class='open-tab-button pure-button #{roomClass}' data-room-url='#{r.room_url}' data-live-provider='#{r.live_provider}'>#{r.room_name} (#{room.online})</button>"
 		roomHtml+="</li>"
 
 	document.getElementById('roomList').innerHTML=roomHtml
