@@ -36,8 +36,17 @@ renderRoom=()->
 	roomHtml=''
 
 	for r in rooms
+		roomClass=''
+		if r.show_status isnt 2
+			switch r.live_provider
+				when "douyu"
+					roomClass='button-douyu'
+				when "zhanqi"
+					roomClass='button-zhanqi'
+
+
 		roomHtml+="<li class='layout-item-module layout-item-module-base'>"
-		roomHtml+="<button title='关注人数:#{r.fans}' class='open-tab-button pure-button #{if (r.show_status is 2) then '' else 'button-success'}' data-room-id='#{r.room_id}'>#{r.room_name}</button>"
+		roomHtml+="<button title='关注人数:#{r.fans}' class='open-tab-button pure-button #{roomClass}' data-room-url='#{r.room_url}' data-live-provider='#{r.live_provider}'>#{r.room_name}</button>"
 		roomHtml+="</li>"
 
 	document.getElementById('roomList').innerHTML=roomHtml
@@ -47,7 +56,12 @@ renderRoom=()->
 
 	for b in btns
 		b.addEventListener 'click',()->
-			url="http://www.douyutv.com/"+@attributes['data-room-id'].value
+			switch @attributes['data-live-provider'].value
+				when 'douyu'
+					url="http://www.douyutv.com"+@attributes['data-room-url'].value
+				when 'zhanqi'
+					url="http://www.zhanqi.tv"+@attributes['data-room-url'].value
+			
 			chrome.tabs.create(url:url)
 
 

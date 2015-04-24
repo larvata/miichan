@@ -8,10 +8,15 @@ roomsShowTime={}
 
 scheduleNotificationId="6666"
 
-apiScheduleList="http://douyu.sashi-con.info/api/list"
-apiScheduleRoom="http://douyu.sashi-con.info/api/room"
-apiSnap="http://douyu.sashi-con.info/snap"
-apiAvatar="http://douyu.sashi-con.info/avatar/"
+# apiDomain="127.0.0.1:3434"
+apiDomain="live.sashi.co"
+
+apiScheduleList="http://#{apiDomain}/api/list"
+apiScheduleRoom="http://#{apiDomain}/api/room"
+apiSnap="http://#{apiDomain}/snap"
+apiAvatar="http://#{apiDomain}/avatar"
+
+
 
 getBase64Image=(img)->
 
@@ -48,21 +53,35 @@ showRoomNotification=(room)->
 
 	img=new Image()
 	img.crossOrigin = 'anonymous'
-	img.src=room.room_src.replace("http://staticlive.douyutv.com/upload/web_pic",apiSnap)
+	# img.src=room.live_snapshot.replace("http://staticlive.douyutv.com/upload/web_pic",apiSnap)
+	switch room.live_provider
+		when 'douyu'
+			img.src=apiSnap+'/douyu'+room.live_snapshot
+		when 'zhanqi'
+			img.src=apiSnap+'/zhanqi'+room.live_snapshot
 	img.onload=(data)->
 
 		imgData=getBase64Image(img)
 		imgAvatar=new Image()
 		imgAvatar.crossOrigin='anonymous'
-		imgAvatar.src=apiAvatar+room.owner_uid
+		switch room.live_provider
+			when 'douyu'
+				imgAvatar.src=apiAvatar+'/douyu'+room.owner_avatar
+			when 'zhanqi'
+				imgAvatar.src=apiAvatar+'/zhanqi'+room.owner_avatar			
+		
+		
 
 		imgAvatar.onload=(data)->
 
 			avatarData=getBase64Image(imgAvatar)
 			d=new Date(room.show_time*1000)
+			dn=new Date()
+			diff=dn-d
+			minutes=Math.round(diff/60000)
 
-			formattedTime="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}"
-			message ="#{formattedTime} 开播 "
+			# formattedTime="#{d.getFullYear()}/#{d.getMonth()+1}/#{d.getDay()+1} #{d.getHours()}:#{('0'+d.getMinutes()).substr(d.getMinutes().toString().length-1)}"
+			message ="已播#{minutes}分钟 "
 			message += "#{room.show_details}"
 
 			options=
