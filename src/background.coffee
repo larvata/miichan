@@ -87,7 +87,7 @@ showRoomNotification=(room)->
 			options=
 				type:"image"
 				iconUrl: avatarData
-				title: "#{room.room_name}"
+				title: "#{room.room_name} (#{room.online})" 
 				imageUrl:imgData
 				message: message
 
