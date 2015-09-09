@@ -5,7 +5,8 @@
 	"author":"Larvata",
 
 	"permissions":[
-		"notifications"
+		"notifications",
+		"storage"
 	],
 
 	"icons":{
