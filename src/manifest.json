@@ -6,7 +6,8 @@
 
 	"permissions":[
 		"notifications",
-		"storage"
+		"storage",
+		"http://live.sashi.co/"
 	],
 
 	"icons":{
@@ -24,8 +25,10 @@
 
 	"options_page":"options.html",
 	"background":{
-		"scripts":["background.js"]
+		"scripts":["scripts/zepto.min.js","scripts/lodash.min.js","scripts/birthday.js","background.js"],
+		"css":[
+			"font-awesome.min.css",
+			"pure-min.css"
+			]
 	}
-
-
 }
