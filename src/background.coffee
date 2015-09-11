@@ -1,6 +1,11 @@
 schedules=[]
 scheduleChanged=false
+
+birthdayMembers=[]
+
 lastSchedules=[]
+birthdayNotify=""
+
 
 rooms=[]
 roomsStatus={}
@@ -17,6 +22,8 @@ apiSnap="http://#{apiDomain}/snap"
 apiAvatar="http://#{apiDomain}/avatar"
 
 
+
+
 getBase64Image=(img)->
 
   canvas=document.createElement("canvas")
@@ -29,10 +36,7 @@ getBase64Image=(img)->
 
   return canvas.toDataURL("image/jpg")
 
-
-
-
-getBirthdayMembersName=()->
+getBirthdayMembers=()->
 
   date = new Date()
   m = _.padLeft(date.getMonth()+1,2,"0")
@@ -48,7 +52,7 @@ setBadge=(text)->
   chrome.browserAction.setBadgeText(text:text)
 
 showBirthdayNotification=()->
-  
+
 
 showScheduleNotification=()->
   items=schedules.map (s)->
@@ -115,7 +119,13 @@ showRoomNotification=(room)->
 clearRoomNotification=(room)->
   chrome.notifications.clear room.room_id.toString(),()->
 
+getBirthday=()->
+  console.log "getBirthday"
+  birthday = getBirthdayMembersName()
+
+
 getSchedules=()->
+  console.log "getSchedules"
   $.getJSON apiScheduleList,(data,status)->
     if status isnt 'success'
       console.log "Failed: getSchedules(#{apiScheduleList}) status: #{status}"
@@ -123,17 +133,24 @@ getSchedules=()->
 
     # Success!
     schedules = data
-    if JSON.stringify(schedules) is JSON.stringify(lastSchedules)
+    console.log "schedules:"
+    console.log schedules
+    console.log "lastSchedules:"
+    console.log lastSchedules
+    if _.isEqual(schedules,lastSchedules)
       # not changed
+      console.log "equal"
     else
       setBadge('!')
       showScheduleNotification()
 
     lastSchedules=schedules
+    chrome.storage.sync.set({lastSchedules})
 
   setTimeout getSchedules,120000
 
 getRooms=()->
+  console.log "getRooms"
   $.getJSON apiScheduleRoom,(data,status)->
     if status isnt 'success'
       console.log "Failed: getRooms(#{apiScheduleRoom}) status: #{status}"
@@ -158,9 +175,19 @@ getRooms=()->
   setTimeout getRooms,120000
 
 
-do->
-  ret = getBirthdayMembersName()
-  console.log ret
-  getSchedules()
-  getRooms()
+# init
+# load lastSchedules from chrome storage
+console.log "init"
+chrome.storage.sync.get ["lastSchedules"],(items)->
+  {lastSchedules} = items
+  console.log "load lastSchedules"
+  console.log lastSchedules
+
+  do->
+    ret = getBirthdayMembersName()
+    console.log ret
+    getSchedules()
+    getRooms()
+    getBirthday()
+  
 
