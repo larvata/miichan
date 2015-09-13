@@ -21,9 +21,6 @@ apiScheduleRoom="http://#{apiDomain}/api/room"
 apiSnap="http://#{apiDomain}/snap"
 apiAvatar="http://#{apiDomain}/avatar"
 
-
-
-
 getBase64Image=(img)->
 
   canvas=document.createElement("canvas")
@@ -45,6 +42,7 @@ getBirthdayMembers=()->
 
   # return _.chain(birthday).where({date:dateString}).pluck('name').value().join(',')
   return _.chain(birthday).where({date:dateString}).value()
+
 
 
 setBadge=(text)->
@@ -95,12 +93,20 @@ showRoomNotification=(room)->
     imgAvatar.onload=(data)->
 
       avatarData=getBase64Image(imgAvatar)
-      d = room.show_time
+      d = room.show_time * 1000
+      console.log "show_time"
+      console.log room.show_time
+
       dn = Date.now()
-      diffMinutes = dn - d
+
+      console.log "compare date"
+      console.log d
+      console.log dn
+      diffMinutes = parseInt((dn - d)/1000/60)
 
       message ="已播#{diffMinutes}分钟 "
       message += "#{room.show_details}"
+
 
       options=
         type:"image"
@@ -120,12 +126,12 @@ clearRoomNotification=(room)->
   chrome.notifications.clear room.room_id.toString(),()->
 
 getBirthday=()->
-  console.log "getBirthday"
-  birthday = getBirthdayMembersName()
+  console.log "getBirthday2"
+  birthday = getBirthdayMembers()
 
 
 getSchedules=()->
-  console.log "getSchedules"
+  console.log "getSchedules xhr"
   $.getJSON apiScheduleList,(data,status)->
     if status isnt 'success'
       console.log "Failed: getSchedules(#{apiScheduleList}) status: #{status}"
@@ -141,6 +147,7 @@ getSchedules=()->
       # not changed
       console.log "equal"
     else
+      console.log "not equal"
       setBadge('!')
       showScheduleNotification()
 
@@ -150,7 +157,7 @@ getSchedules=()->
   setTimeout getSchedules,120000
 
 getRooms=()->
-  console.log "getRooms"
+  console.log "getRooms xhr"
   $.getJSON apiScheduleRoom,(data,status)->
     if status isnt 'success'
       console.log "Failed: getRooms(#{apiScheduleRoom}) status: #{status}"
@@ -178,14 +185,17 @@ getRooms=()->
 # init
 # load lastSchedules from chrome storage
 console.log "init"
-chrome.storage.sync.get ["lastSchedules"],(items)->
+chrome.storage.sync.get ['lastSchedules',''],(items)->
   {lastSchedules} = items
   console.log "load lastSchedules"
+  console.log items
+  console.log "last schedules"
   console.log lastSchedules
 
   do->
-    ret = getBirthdayMembersName()
-    console.log ret
+    # ret = getBirthdayMembers()
+    # console.log "get birthday"
+    # console.log ret
     getSchedules()
     getRooms()
     getBirthday()

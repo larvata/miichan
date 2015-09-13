@@ -1,5 +1,7 @@
 gulp = require 'gulp'
 coffee = require 'gulp-coffee'
+watch =require 'gulp-watch'
+batch = require 'gulp-batch'
 del = require 'del'
 replace = require 'gulp-replace'
 pkg = require './package.json'
@@ -37,3 +39,7 @@ gulp.task "clean",(cb)->
   del "#{dest}/",cb
 
 gulp.task "build",['clean'],build
+
+gulp.task 'watch', ()->
+  gulp.watch "#{src}/*.js", ["build"]
+  gulp.watch "#{src}/*.html", ["build"]

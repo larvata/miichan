@@ -1,7 +1,7 @@
 
 window.onload=()->
-  console.log(birthday)
-
+  # console.log(birthday)
+  renderBirthday()
   renderSchedule()
   renderRoom()
 
@@ -9,10 +9,16 @@ window.onload=()->
 #   url="http://www.douyutv.com/"+room_id
 #   chrome.tabs.create(url:url)
 
+renderBirthday=()->
+  birthday = chrome.extension.getBackgroundPage().birthday
+  console.log "birthday"
+  console.log birthday
 
 renderSchedule=()->
 
   schedules=chrome.extension.getBackgroundPage().schedules
+  console.log "schedules"
+  console.log schedules
 
   scheduleHtml=''
   for s in schedules
@@ -33,6 +39,8 @@ renderSchedule=()->
 renderRoom=()->
 
   rooms=chrome.extension.getBackgroundPage().rooms
+  console.log "rooms"
+  console.log rooms
 
   roomHtml=''
 
